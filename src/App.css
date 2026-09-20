@@ -31,6 +31,7 @@
     linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size: 42px 42px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
   mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
 }
 
@@ -66,36 +67,48 @@
   animation: floatThree 14s ease-in-out infinite;
 }
 
+.star-trail {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
 .hero {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: min(1100px, calc(100% - 36px));
   min-height: 720px;
   margin: 18px;
   padding: 28px 32px;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 32px;
-
   background:
     linear-gradient(
       180deg,
       rgba(255, 255, 255, 0.06),
       rgba(255, 255, 255, 0.02)
     );
-
   box-shadow:
     0 40px 120px rgba(0, 0, 0, 0.55),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
-
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-
   animation: reveal 0.9s ease-out both;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 31px;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 30%, transparent 70%, rgba(96, 165, 250, 0.06));
 }
 
 .top-bar,
@@ -110,12 +123,9 @@
   align-items: center;
   gap: 9px;
   padding: 9px 13px;
-
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
-
   background: rgba(255, 255, 255, 0.035);
-
   color: #b6bdcb;
   font-size: 12px;
   font-weight: 600;
@@ -152,44 +162,24 @@
   width: 92px;
   height: 92px;
   margin-bottom: 28px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 28px;
-
-  background:
-    linear-gradient(135deg, #8b5cf6, #4f46e5 55%, #2563eb);
-
+  background: linear-gradient(135deg, #8b5cf6, #4f46e5 55%, #2563eb);
   box-shadow:
     0 20px 45px rgba(79, 70, 229, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
-
   transform: rotate(-6deg);
-  transition: transform 0.35s ease;
-}
-
-.avatar::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.55),
-    transparent 45%
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
 .avatar:hover {
   transform: rotate(0deg) scale(1.04);
+  box-shadow:
+    0 24px 55px rgba(79, 70, 229, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .avatar span {
@@ -204,7 +194,6 @@
   align-items: center;
   gap: 12px;
   margin: 0 0 18px;
-
   color: #7e8798;
   font-size: 10px;
   font-weight: 800;
@@ -224,6 +213,7 @@ h1 {
   line-height: 0.9;
   font-weight: 850;
   letter-spacing: -7px;
+  text-shadow: 0 0 40px rgba(129, 140, 248, 0.08);
 }
 
 .gradient-text {
@@ -274,27 +264,25 @@ h1 {
 
 .tech-stack span {
   padding: 8px 11px;
-
   color: #adb5c3;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.4px;
-
   border: 1px solid rgba(255, 255, 255, 0.075);
   border-radius: 9px;
-
   background: rgba(255, 255, 255, 0.035);
-
   transition:
     transform 0.25s ease,
     border-color 0.25s ease,
-    background 0.25s ease;
+    background 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .tech-stack span:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   border-color: rgba(139, 92, 246, 0.4);
   background: rgba(139, 92, 246, 0.08);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.12);
 }
 
 .actions {
@@ -308,20 +296,17 @@ h1 {
   align-items: center;
   justify-content: center;
   gap: 10px;
-
   min-width: 145px;
   padding: 13px 18px;
-
   border-radius: 12px;
   text-decoration: none;
-
   font-size: 13px;
   font-weight: 750;
-
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
-    border-color 0.25s ease;
+    border-color 0.25s ease,
+    filter 0.25s ease;
 }
 
 .button svg {
@@ -331,6 +316,7 @@ h1 {
 
 .button:hover {
   transform: translateY(-3px);
+  filter: brightness(1.04);
 }
 
 .button.primary {
@@ -362,7 +348,6 @@ h1 {
 .bottom-bar {
   padding-top: 22px;
   border-top: 1px solid rgba(255, 255, 255, 0.07);
-
   color: #646d7d;
   font-size: 11px;
 }
@@ -392,9 +377,9 @@ h1 {
 }
 
 .scroll-arrow {
-  color: #8b7cf7;
-  font-size: 17px;
-  animation: bounce 1.6s ease-in-out infinite;
+  color: #a78bfa;
+  font-size: 15px;
+  animation: sparkle 1.8s ease-in-out infinite;
 }
 
 @keyframes reveal {
@@ -402,7 +387,6 @@ h1 {
     opacity: 0;
     transform: translateY(18px) scale(0.985);
   }
-
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -414,7 +398,6 @@ h1 {
   100% {
     transform: translate(0, 0);
   }
-
   50% {
     transform: translate(90px, 50px);
   }
@@ -425,7 +408,6 @@ h1 {
   100% {
     transform: translate(0, 0);
   }
-
   50% {
     transform: translate(-80px, 40px);
   }
@@ -436,20 +418,20 @@ h1 {
   100% {
     transform: translate(0, 0);
   }
-
   50% {
     transform: translate(60px, -50px);
   }
 }
 
-@keyframes bounce {
+@keyframes sparkle {
   0%,
   100% {
-    transform: translateY(0);
+    opacity: 0.45;
+    transform: scale(0.85) rotate(0deg);
   }
-
   50% {
-    transform: translateY(4px);
+    opacity: 1;
+    transform: scale(1.15) rotate(20deg);
   }
 }
 
@@ -459,6 +441,10 @@ h1 {
     min-height: 650px;
     padding: 20px;
     border-radius: 24px;
+  }
+
+  .hero::before {
+    border-radius: 23px;
   }
 
   .year {
@@ -534,5 +520,9 @@ h1 {
   *::after {
     animation: none !important;
     transition: none !important;
+  }
+
+  .star-trail {
+    display: none;
   }
 }
